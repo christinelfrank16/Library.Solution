@@ -1,0 +1,62 @@
+@using Library.Models;
+@model IEnumerable<Library.Models.Transaction>
+
+<h1>Transactions for @User.Identity.Name</h1>
+
+@if (Model.Any())
+{
+  <div class="row bookHeader">
+      <div class="col-md-3">
+          Book Title
+      </div>
+      <div class="col-md-3">
+          Date Checked Out
+      </div>
+      <div class="col-md-3">
+          Due Date
+      </div>
+      <div class="col-md-3">
+          Date Returned
+      </div>
+    </div>
+    @foreach (Transaction transaction in Model)
+    {
+        <div class="row">
+        </div>
+      @foreach(Checkout checkout in @transaction.Checkouts)
+      {
+          <div class="row">
+            <div class="col-md-3">
+                @checkout.Copy.Book.Title 
+            </div>
+            <div class="col-md-3">
+                @checkout.CheckoutDate
+            </div>
+            
+                @if(@checkout.DueDate > @DateTime.Now())
+                {
+                    @:<div class="col-md-3 overdue">
+                }
+                else
+                {
+                    @:<div class="col-md-3">
+                }
+                @checkout.DueDate
+            </div>
+            <div class="col-md-3">
+                @checkout.CheckinDate
+            </div>
+        </div>
+          
+      }
+    }
+  
+} 
+else
+{
+  <h3>No items have been added yet!</h3>
+}
+
+<p>@Html.ActionLink("Add new item", "Create")</p>
+
+<p>@Html.ActionLink("Home", "Index", "Home")</p>

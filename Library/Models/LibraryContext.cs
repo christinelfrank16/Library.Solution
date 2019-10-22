@@ -12,6 +12,7 @@ namespace Library.Models
     public DbSet<Checkout> Checkouts {get;set;}
     public DbSet<Copy> Copies {get;set;}
     public DbSet<Patron> Patrons {get;set;}
+    public DbSet<Transaction> Transactions {get; set;}
 
 
     public LibraryContext(DbContextOptions options) : base(options) { }

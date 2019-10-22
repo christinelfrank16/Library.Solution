@@ -18,6 +18,7 @@ namespace Library.Controllers
         public ActionResult Index()
         {
             List<Book> model = _db.Books.Include(book => book.Authors).ThenInclude(entry => entry.Author).ToList();
+            ViewBag.BookBag = Transaction.BookBag;
 
             return View(model);
         }

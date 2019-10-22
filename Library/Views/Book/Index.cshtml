@@ -1,5 +1,9 @@
 @model List<Library.Models.Book>;
 @using System.Collections.Generic;
+@using System.Linq;
+@{
+    List<Checkout> bb = ViewBag.BookBag as List<Checkout>;
+}
 
 <h1>Book Inventory</h1>
 <h4>Add a new book @Html.ActionLink("here","Create")</h4>
@@ -12,6 +16,9 @@
 else
 {
     <div class="row bookHeader">
+        <div class="col-md-2">
+            In BookBag
+        </div>
         <div class="col-md-2">
             Title
         </div>
@@ -34,6 +41,16 @@ else
     @foreach(Book book in Model)
     {
         <div class="row">
+        <div class="col-md-2">
+            @if(@bb.FirstOrDefault(checkout => checkout.Copy.Book.BookId == book.BookId).ToBeCheckedOut)
+            {
+                <input type="checkbox" value="true">
+            }
+            else
+            {
+                <input type="checkbox" value="false">
+            }
+        </div>
         <div class="col-md-2">
             @book.Title
         </div>

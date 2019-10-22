@@ -1,0 +1,16 @@
+@model Library.Models.Transaction
+
+<h4>Are you ready to checkout?</h4>
+
+@using (Html.BeginForm())
+{
+    @foreach(Checkout item in Model.BookBag)
+    {
+        @Html.Label(item.Book.Title)
+        <input type="hidden" value="@item.CheckoutId">
+        @Html.CheckBoxFor(m => m.ToBeCheckedOut)
+    }
+
+    <input type="submit" value="Checkout!" class="btn btn-default" />
+}
+<p>@Html.ActionLink("Show all items", "Index")</p>
