@@ -1,0 +1,16 @@
+
+    @model Library.Models.Author
+
+    <h1>Add an author:</h1>
+
+    @using (Html.BeginForm())
+    {
+        @Html.TextBoxFor(model => model.FirstName, new {@placeholder="First Name"})
+        @Html.TextBoxFor(model => model.LastName, new {@placeholder="Last Name"})
+
+        <input type="submit" value="Add Author">
+    }
+
+
+
+    

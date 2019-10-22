@@ -1,0 +1,21 @@
+@model List<Library.Models.Author>;
+
+
+    <h1>Here is a list of authors:</h1>
+
+@if(Model.Count == 0)
+{
+    <h3>No authors yet.</h3>
+}
+
+else
+{
+    @foreach(Author author in Model)
+    {
+        <div class="row">
+            <div class="col-md-4">
+                <p>@Html.ActionLink($"{author.WholeName}", "Details")</p>
+            </div>
+        </div>
+    }
+}

@@ -1,0 +1,20 @@
+@model Library.Models.Author;
+
+
+<h1>Books authored by @Model.WholeName</h1>
+
+@if(Model.Books.Count == 0)
+{
+    <h3>There are no book associated with this author in the library.</h3>
+}
+else
+{
+    @foreach(var book in Model.Books)
+    {
+        <div class="row">
+            <div class ="col-md-4">
+                <p>@Html.ActionLink($"{book.Book.Title}", "Details", "Book", new {id = book.BookId})</p>
+            </div>
+        </div>
+    }
+}
