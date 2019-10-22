@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Library.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Library
 {
@@ -18,7 +19,7 @@ namespace Library
             Configuration = builder.Build();
         }
 
-        public IConfigurationRoot Configuration { get; set;}
+        public IConfigurationRoot Configuration { get; set; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -27,11 +28,27 @@ namespace Library
             .AddDbContext<LibraryContext>(options => options
             .UseMySql(Configuration["ConnectionStrings:DefaultConnection"]));
 
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+               .AddEntityFrameworkStores<LibraryContext>()
+               .AddDefaultTokenProviders();
+
+            services.Configure<IdentityOptions>(options =>
+                {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequiredLength = 0;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequiredUniqueChars = 0;
+                });
+
         }
         public void Configure(IApplicationBuilder app)
         {
             app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

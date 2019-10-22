@@ -1,0 +1,14 @@
+@using Library.ViewModels
+@model LoginViewModel
+
+<h1>Login with your account</h1>
+
+<hr/>
+
+@using (Html.BeginForm())
+{
+    @Html.TextBoxFor(m => m.Email, new{@placeholder = "Email"})
+    @Html.PasswordFor(m => m.Password, new{@placeholder = "Password"})
+
+    <input type="submit" value="Log in">
+}
