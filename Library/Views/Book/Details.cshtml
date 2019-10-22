@@ -14,3 +14,5 @@
 @Html.DisplayNameFor(model => model.Book.PublishYear) : @Html.DisplayFor(model => model.Book.PublishYear)<br>
 @Html.DisplayNameFor(model => model.Book.Format) : @Html.DisplayFor(model => model.Book.Format)
 
+<p>Add an author @Html.ActionLink("here", "AddAuthor", new {id = @Model.Book.BookId})</p>
+

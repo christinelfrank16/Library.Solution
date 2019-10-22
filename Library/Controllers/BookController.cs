@@ -24,7 +24,7 @@ namespace Library.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.AuthorId = new SelectList(_db.Authors.ToList(),"AuthorId", "WholeName");
+            ViewBag.AuthorId = new SelectList(_db.Authors.ToList(), "AuthorId", "WholeName");
             return View();
         }
 
@@ -41,14 +41,14 @@ namespace Library.Controllers
         {
             Book thisBook = _db.Books.Include(book => book.Authors).ThenInclude(entry => entry.Author).FirstOrDefault(book => book.BookId == id);
             List<Author> authors = thisBook.Authors.Select(entry => entry.Author).ToList();
-            BookDetailsViewModel model = new BookDetailsViewModel() { Book = thisBook, Authors = authors};
+            BookDetailsViewModel model = new BookDetailsViewModel() { Book = thisBook, Authors = authors };
             return View(model);
         }
 
         public ActionResult Edit(int id)
         {
             Book model = _db.Books.FirstOrDefault(book => book.BookId == id);
-            ViewBag.AuthorId = new SelectList(_db.Authors.ToList(),"AuthorId", "WholeName");
+            ViewBag.AuthorId = new SelectList(_db.Authors.ToList(), "AuthorId", "WholeName");
             return View(model);
         }
 
@@ -60,7 +60,7 @@ namespace Library.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Delete (int id)
+        public ActionResult Delete(int id)
         {
             Book model = _db.Books.FirstOrDefault(book => book.BookId == id);
             return View(model);
@@ -80,6 +80,24 @@ namespace Library.Controllers
         {
             Book thisBook = _db.Books.FirstOrDefault(book => book.BookId == id);
             _db.Books.Remove(thisBook);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult AddAuthor(int id)
+        {
+            Book model = _db.Books.Include(book => book.Authors).ThenInclude(entry => entry.Author).FirstOrDefault(book => book.BookId == id);
+            List<int> bookAuthorIds = model.Authors.Select(a => a.AuthorId).ToList();
+             ViewBag.AuthorId = new SelectList(_db.Authors
+             .Where(author => 
+                !bookAuthorIds.Contains(author.AuthorId)).ToList(), 
+             "AuthorId", "WholeName");
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult AddAuthor(int BookId, int AuthorId)
+        {
+            _db.AuthorBooks.Add(new AuthorBook(){AuthorId = AuthorId, BookId = BookId});
             _db.SaveChanges();
             return RedirectToAction("Index");
         }

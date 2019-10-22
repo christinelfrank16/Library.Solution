@@ -1,0 +1,15 @@
+@model Library.Models.Book
+
+<h1>Add an author to @Model.Title</h1>
+
+@using (Html.BeginForm())
+{
+    @Html.Hidden("BookId", @Model.BookId)
+    <p>@Html.Label("Author")</p>
+    <p>@Html.DropDownList("AuthorId")</p>
+
+
+    <input type="submit" value="Add Author">
+}
+
+<p>If your author doesn't appear in the drop down, add @Html.ActionLink("here.", "Create", "Author")</p>

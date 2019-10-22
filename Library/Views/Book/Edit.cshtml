@@ -26,3 +26,4 @@
     @Html.TextBoxFor(model=> model.Genre, new { @placeholder="Genre"})
     <input type="submit" value="Save Updates">
 }
+<p>Add an author @Html.ActionLink("here", "AddAuthor", new {id = @Model.BookId})</p>
