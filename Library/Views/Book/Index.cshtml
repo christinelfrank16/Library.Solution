@@ -11,7 +11,7 @@
 }
 else
 {
-    <div class="row">
+    <div class="row bookHeader">
         <div class="col-md-2">
             Title
         </div>
@@ -53,8 +53,8 @@ else
              @book.Format
         </div>
         <div class="col-md-2">
-            @Html.ActionLink("Edit", "Edit", new {id = @book.BookId })
-            @Html.ActionLink("Remove", "Delete", new {id = @book.BookId })
+            @Html.ActionLink("Edit", "Edit", new {id = @book.BookId }) <br>
+            @Html.ActionLink("Remove", "Delete", new {id = @book.BookId }) <br>
             @Html.ActionLink("Details", "Details", new {id = @book.BookId })
         </div>
     </div>

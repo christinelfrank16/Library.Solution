@@ -1,0 +1,16 @@
+@using Library.ViewModels
+@model BookDetailsViewModel;
+
+<h1>@Model.Book.Title</h1>
+
+<h5>Author(s):</h5>
+<ul>
+@foreach(Author author in Model.Authors)
+{
+    <li>@author.WholeName</li>
+}
+</ul>
+@Html.DisplayNameFor(model => model.Book.Genre) : @Html.DisplayFor(model => model.Book.Genre)<br>
+@Html.DisplayNameFor(model => model.Book.PublishYear) : @Html.DisplayFor(model => model.Book.PublishYear)<br>
+@Html.DisplayNameFor(model => model.Book.Format) : @Html.DisplayFor(model => model.Book.Format)
+

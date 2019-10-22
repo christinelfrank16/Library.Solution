@@ -1,0 +1,28 @@
+@model Library.Models.Book;
+@using System.Collections.Generic;
+@{
+    ViewData["Format"] =  new SelectList(
+        new List<SelectListItem>
+        {
+            new SelectListItem { Selected = true, Text = "Hardcover", Value = "Hardcover"},
+            new SelectListItem { Selected = false, Text = "Paperback", Value = "Paperback"},
+            new SelectListItem { Selected = false, Text = "e-book", Value = "e-book"},
+            new SelectListItem { Selected = false, Text = "Disk", Value = "Disk"},
+            new SelectListItem { Selected = false, Text = "Parchment", Value = "Parchment"},
+        }, "Value" , "Text", 1);
+}
+
+<h2>Add a new book!</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model=>model.BookId)
+    @Html.TextBoxFor(model=> model.Title, new { @placeholder="Title"})
+    @Html.Label("Author")
+    @Html.DropDownList("AuthorId")
+    @Html.TextBoxFor(model=> model.PublishYear, new { @placeholder="Year Published"})
+    @Html.LabelFor(model => model.Format)
+    @Html.DropDownList("Format")
+    @Html.TextBoxFor(model=> model.Genre, new { @placeholder="Genre"})
+    <input type="submit" value="Save Updates">
+}

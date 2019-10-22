@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
 using Library.Models;
+using Library.ViewModels;
 
 namespace Library.Controllers
 {
@@ -38,13 +39,16 @@ namespace Library.Controllers
 
         public ActionResult Details(int id)
         {
-            Book model = _db.Books.FirstOrDefault(book => book.BookId == id);
+            Book thisBook = _db.Books.Include(book => book.Authors).ThenInclude(entry => entry.Author).FirstOrDefault(book => book.BookId == id);
+            List<Author> authors = thisBook.Authors.Select(entry => entry.Author).ToList();
+            BookDetailsViewModel model = new BookDetailsViewModel() { Book = thisBook, Authors = authors};
             return View(model);
         }
 
         public ActionResult Edit(int id)
         {
             Book model = _db.Books.FirstOrDefault(book => book.BookId == id);
+            ViewBag.AuthorId = new SelectList(_db.Authors.ToList(),"AuthorId", "WholeName");
             return View(model);
         }
 
