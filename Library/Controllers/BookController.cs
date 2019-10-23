@@ -17,8 +17,11 @@ namespace Library.Controllers
         }
         public ActionResult Index()
         {
-            List<Book> model = _db.Books.Include(book => book.Authors).ThenInclude(entry => entry.Author).ToList();
-            ViewBag.BookBag = Transaction.BookBag;
+            List<Book> books = _db.Books.Include(book => book.Authors).ThenInclude(entry => entry.Author).ToList();
+            List<int> bookIds = books.Select(book => book.BookId).ToList();
+            List<Copy> copies = _db.Copies.Where(copy => bookIds.Contains(copy.BookId) ).ToList();
+            ViewBag.BookBag = Checkout.BookBag;
+            BookIndexViewModel model = new BookIndexViewModel() {Books = books, Copies = copies };
 
             return View(model);
         }
@@ -34,6 +37,7 @@ namespace Library.Controllers
         {
             _db.Books.Add(book);
             _db.AuthorBooks.Add(new AuthorBook() { AuthorId = AuthorId, BookId = book.BookId });
+            _db.Copies.Add(new Copy() { BookId = book.BookId });
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -61,11 +65,11 @@ namespace Library.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Delete(int id)
-        {
-            Book model = _db.Books.FirstOrDefault(book => book.BookId == id);
-            return View(model);
-        }
+        // public ActionResult Delete(int id)
+        // {
+        //     Book model = _db.Books.FirstOrDefault(book => book.BookId == id);
+        //     return View(model);
+        // }
 
         [HttpPost]
         public ActionResult DeleteAuthor(int joinId)
@@ -76,8 +80,7 @@ namespace Library.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult Delete(int id)
         {
             Book thisBook = _db.Books.FirstOrDefault(book => book.BookId == id);
             _db.Books.Remove(thisBook);

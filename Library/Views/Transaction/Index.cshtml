@@ -1,5 +1,9 @@
 @using Library.Models;
+@using System;
 @model IEnumerable<Library.Models.Transaction>
+@{
+    var today = DateTime.Now;
+}
 
 <h1>Transactions for @User.Identity.Name</h1>
 
@@ -25,7 +29,7 @@
         </div>
       @foreach(Checkout checkout in @transaction.Checkouts)
       {
-          <div class="row">
+        <div class="row">
             <div class="col-md-3">
                 @checkout.Copy.Book.Title 
             </div>
@@ -33,16 +37,19 @@
                 @checkout.CheckoutDate
             </div>
             
-                @if(@checkout.DueDate > @DateTime.Now())
+                @if(@checkout.DueDate < @today)
                 {
-                    @:<div class="col-md-3 overdue">
+                    <div class="col-md-3 overdue">
+                        @checkout.DueDate
+                    </div>
                 }
                 else
                 {
-                    @:<div class="col-md-3">
+                    <div class="col-md-3">
+                        @checkout.DueDate
+                    </div>
                 }
-                @checkout.DueDate
-            </div>
+                
             <div class="col-md-3">
                 @checkout.CheckinDate
             </div>

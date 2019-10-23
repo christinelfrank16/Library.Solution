@@ -3,14 +3,16 @@ using System;
 using Library.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Library.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    partial class LibraryContextModelSnapshot : ModelSnapshot
+    [Migration("20191023174843_updateCheckout")]
+    partial class updateCheckout
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -170,15 +172,15 @@ namespace Library.Migrations
                     b.Property<int>("PatronId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("CopyId");
+
+                    b.Property<string>("Email");
+
                     b.Property<string>("FirstName");
 
                     b.Property<string>("LastName");
 
-                    b.Property<string>("UserId");
-
                     b.HasKey("PatronId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Patrons");
                 });
@@ -188,13 +190,9 @@ namespace Library.Migrations
                     b.Property<int>("TransactionId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("PatronId");
-
                     b.Property<string>("UserId");
 
                     b.HasKey("TransactionId");
-
-                    b.HasIndex("PatronId");
 
                     b.HasIndex("UserId");
 
@@ -328,7 +326,7 @@ namespace Library.Migrations
                         .HasForeignKey("CopyId1");
 
                     b.HasOne("Library.Models.Patron", "Patron")
-                        .WithMany()
+                        .WithMany("Copies")
                         .HasForeignKey("PatronId")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -346,19 +344,8 @@ namespace Library.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Library.Models.Patron", b =>
-                {
-                    b.HasOne("Library.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
             modelBuilder.Entity("Library.Models.Transaction", b =>
                 {
-                    b.HasOne("Library.Models.Patron")
-                        .WithMany("Transactions")
-                        .HasForeignKey("PatronId");
-
                     b.HasOne("Library.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");

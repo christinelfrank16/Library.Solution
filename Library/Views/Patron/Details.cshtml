@@ -1,0 +1,17 @@
+@model Library.Models.Patron;
+
+<h1>@Model.WholeName</h1>
+
+<h5>Transaction(s):</h5>
+
+    <p>Title | Checked Out On Date | Due Date | Checked In Date </p>
+@foreach(Transaction txn in Model.Transactions)
+{
+    @foreach(Checkout copy in txn.Checkouts)
+    {
+        <p>@copy.Copy.Book.Title | @copy.CheckoutDate | @copy.DueDate | @copy.CheckinDate</p>
+    }
+}
+
+
+

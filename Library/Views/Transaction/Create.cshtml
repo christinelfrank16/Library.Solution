@@ -1,16 +1,21 @@
 @model Library.Models.Transaction
+@using System.Linq;
+
+@{
+
+    var bookbag = Checkout.BookBag;
+}
 
 <h4>Are you ready to checkout?</h4>
 
 @using (Html.BeginForm())
 {
-    @foreach(Checkout item in Model.BookBag)
+    @foreach(Copy item in bookbag)
     {
         @Html.Label(item.Book.Title)
-        <input type="hidden" value="@item.CheckoutId">
-        @Html.CheckBoxFor(m => m.ToBeCheckedOut)
+        <input type="checkbox" name="BookCopy" value="@item.BookId">
     }
 
-    <input type="submit" value="Checkout!" class="btn btn-default" />
+    <input type="submit" value="Checkout!" />
 }
 <p>@Html.ActionLink("Show all items", "Index")</p>
