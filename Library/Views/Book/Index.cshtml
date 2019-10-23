@@ -53,9 +53,13 @@ else
                 <input type="checkbox" name="InBookBag" value="@Model.Copies.FirstOrDefault(copy => copy.BookId == book.BookId && copy.CheckoutId == 0).CopyId" checked>
 
             }
-            else
+            else if(@Model.Copies.FirstOrDefault(copy => copy.BookId == book.BookId && copy.CheckoutId == 0) != null)
             {
                 <input type="checkbox" name="InBookBag" value="@Model.Copies.FirstOrDefault(copy => copy.BookId == book.BookId && copy.CheckoutId == 0).CopyId">
+            }
+            else
+            {
+                <p>N/A</p>
             }
         </div>
         <div class="col-md-2">

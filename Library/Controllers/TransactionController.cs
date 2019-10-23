@@ -61,13 +61,17 @@ namespace Library.Controllers
             List<Copy> CheckedOutBookBagCopies = new List<Copy>();
             foreach(int copyId in BookCopy)
             {
-                Checkout checkout = new Checkout(){PatronId = patron.PatronId, CopyId = copyId, TransactionId = dbTransaction.TransactionId, CheckoutDate = DateTime.Today, DueDate = DateTime.Today.AddDays(14)};
+                Checkout checkout = new Checkout(){PatronId = patron.PatronId, CopyId = copyId, TransactionId = dbTransaction.TransactionId, CheckoutDate = DateTime.Now, DueDate = DateTime.Today.AddDays(14)};
                 _db.Checkouts.Add(checkout);
                 checkouts.Add(checkout);
                 CheckedOutBookBagCopies.Add(Checkout.BookBag.FirstOrDefault(copy => copy.CopyId == copyId));
+                CheckedOutBookBagCopies.ForEach(copy => {
+                    Checkout.BookBag.Remove(copy);
+                    copy.CheckoutId = checkout.CheckoutId;
+                    _db.Entry(copy).State = EntityState.Modified;
+                });
             }
             _db.SaveChanges();
-            CheckedOutBookBagCopies.ForEach(copy => Checkout.BookBag.Remove(copy));
             return RedirectToAction("Index");
         }
 

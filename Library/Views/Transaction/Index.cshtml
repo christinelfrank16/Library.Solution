@@ -41,18 +41,24 @@
                 @if(@checkout.DueDate < @today)
                 {
                     <div class="col-md-3 overdue">
-                        @checkout.DueDate
+                        @checkout.DueDate.ToString("MM/dd/yyyy")
                     </div>
                 }
                 else
                 {
                     <div class="col-md-3">
-                        @checkout.DueDate
+                        @checkout.DueDate.ToString("MM/dd/yyyy")
                     </div>
                 }
                 
             <div class="col-md-3">
-                @checkout.CheckinDate
+                @if(checkout.CheckinDate.ToString() == "1/1/01 12:00:00 AM"){
+                    @:Checked Out
+                }
+                else
+                {
+                    @checkout.CheckinDate
+                }
             </div>
         </div>
           
