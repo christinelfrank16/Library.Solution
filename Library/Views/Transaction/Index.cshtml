@@ -1,13 +1,14 @@
 @using Library.Models;
 @using System;
-@model IEnumerable<Library.Models.Transaction>
+@using Library.ViewModels;
+@model TransactionIndexViewModel;
 @{
     var today = DateTime.Now;
 }
 
 <h1>Transactions for @User.Identity.Name</h1>
 
-@if (Model.Any())
+@if (Model.Transactions.Any())
 {
   <div class="row bookHeader">
       <div class="col-md-3">
@@ -23,7 +24,7 @@
           Date Returned
       </div>
     </div>
-    @foreach (Transaction transaction in Model)
+    @foreach (Transaction transaction in Model.Transactions)
     {
         <div class="row">
         </div>
@@ -31,7 +32,7 @@
       {
         <div class="row">
             <div class="col-md-3">
-                @checkout.Copy.Book.Title 
+                @(Model.Books.FirstOrDefault(copy => copy.CopyId == (Model.Checkouts.FirstOrDefault(c => c.CheckoutId == checkout.CheckoutId).CopyId)).Book.Title)
             </div>
             <div class="col-md-3">
                 @checkout.CheckoutDate

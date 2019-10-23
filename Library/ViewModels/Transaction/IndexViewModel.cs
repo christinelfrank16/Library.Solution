@@ -6,9 +6,8 @@ namespace Library.ViewModels
 {
     public class TransactionIndexViewModel
     {
-
-        public Book Book { get; set; }
-
-        public List<Author> Authors { get; set; }
+        public List<Transaction> Transactions { get; set; }
+        public List<Checkout> Checkouts { get; set; }
+        public List<Copy> Books {get;set;}
     }
 }

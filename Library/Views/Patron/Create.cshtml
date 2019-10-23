@@ -1,0 +1,13 @@
+@model Library.Models.Patron;
+
+<h1>Add account details:</h1>
+<hr/>
+
+@using (Html.BeginForm())
+{
+    @Html.TextBoxFor(model => model.FirstName, new {@placeholder="First Name"})
+    @Html.TextBoxFor(model => model.LastName, new {@placeholder="Last Name"})
+
+    <input type="submit" value="Add details">
+
+}
