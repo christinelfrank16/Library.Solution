@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
+using MoreLinq;
 using System;
 using Library.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -57,13 +58,16 @@ namespace Library.Controllers
             _db.SaveChanges();
             Transaction dbTransaction = _db.Transactions.LastOrDefault();
             List<Checkout> checkouts = new List<Checkout>();
+            List<Copy> CheckedOutBookBagCopies = new List<Copy>();
             foreach(int copyId in BookCopy)
             {
                 Checkout checkout = new Checkout(){PatronId = patron.PatronId, CopyId = copyId, TransactionId = dbTransaction.TransactionId, CheckoutDate = DateTime.Today, DueDate = DateTime.Today.AddDays(14)};
                 _db.Checkouts.Add(checkout);
                 checkouts.Add(checkout);
+                CheckedOutBookBagCopies.Add(Checkout.BookBag.FirstOrDefault(copy => copy.CopyId == copyId));
             }
             _db.SaveChanges();
+            CheckedOutBookBagCopies.ForEach(copy => Checkout.BookBag.Remove(copy));
             return RedirectToAction("Index");
         }
 
@@ -77,7 +81,7 @@ namespace Library.Controllers
                 Copy thisCopy = _db.Copies.Include(book => book.Book).FirstOrDefault(copy => copy.CopyId == InBookBag[i] && copy.CheckoutId == 0);
                 Checkout.BookBag.Add(thisCopy);
             }
-            Checkout.BookBag = Checkout.BookBag.Distinct().ToList();
+            Checkout.BookBag = Checkout.BookBag.DistinctBy(c => c.CopyId).ToList();
             return RedirectToAction("Create");
         }
     }
